@@ -32,6 +32,17 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
+Create the name of the service account to use
+*/}}
+{{- define "minio.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create -}}
+    {{ default (printf "%s-controller" (include "minio.fullname" .)) .Values.serviceAccount.name }}
+{{- else -}}
+    {{ default "default" .Values.serviceAccount.name }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Return the appropriate apiVersion for networkpolicy.
 */}}
 {{- define "minio.networkPolicy.apiVersion" -}}

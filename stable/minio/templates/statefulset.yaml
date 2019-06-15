@@ -47,6 +47,9 @@ spec:
 {{ toYaml .Values.podAnnotations | indent 8 }}
       {{- end }}
     spec:
+      {{- if .Values.serviceAccount.create }}
+          serviceAccountName: {{ template "minio.serviceAccountName" . }}
+      {{- end }}
       {{- if .Values.priorityClassName }}
       priorityClassName: "{{ .Values.priorityClassName }}"
       {{- end }}

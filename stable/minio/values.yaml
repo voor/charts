@@ -180,6 +180,17 @@ buckets: []
   #   policy: none
   #   purge: false
 
+## Create service account
+serviceAccount:
+  create: true
+  name: minio-controller
+
+rbac:
+  create: true
+
+psp:
+  create: true
+
 s3gateway:
   enabled: false
   replicas: 4
