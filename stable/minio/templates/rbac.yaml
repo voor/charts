@@ -20,6 +20,10 @@ rules:
 - apiGroups: [""]
   resources: ["events"]
   verbs: ["create", "patch"]
+- apiGroups: ["extensions"]
+  resources: ["podsecuritypolicies"]
+  resourceNames: [{{ printf "%s-psp" (include "minio.fullname" .) | quote}}]
+  verbs: ["use"]
 ---
 
 ## Role bindings

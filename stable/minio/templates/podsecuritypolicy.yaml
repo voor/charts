@@ -3,7 +3,7 @@
 apiVersion: extensions/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: {{ template "minio.fullname" . }}
+  name: {{ printf "%s-psp" (include "minio.fullname" .) | quote}}
   labels:
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.Name | quote }}
@@ -12,21 +12,15 @@ metadata:
 spec:
   allowPrivilegeEscalation: false
   fsGroup:
-    ranges:
-    - max: 65535
-      min: 1
-    rule: MustRunAs
+    rule: RunAsAny
   requiredDropCapabilities:
   - ALL
   runAsUser:
-    rule: MustRunAsNonRoot
+    rule: RunAsAny
   seLinux:
     rule: RunAsAny
   supplementalGroups:
-    ranges:
-    - max: 65535
-      min: 1
-    rule: MustRunAs
+    rule: RunAsAny
   volumes:
   - configMap
   - emptyDir
