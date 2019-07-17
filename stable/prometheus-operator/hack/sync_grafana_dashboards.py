@@ -35,6 +35,26 @@ charts = [
         'destination': '../templates/grafana/dashboards',
         'type': 'json',
     },
+    {
+        'source': 'https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json',
+        'destination': '../templates/grafana/dashboards',
+        'type': 'json',
+    },
+    {
+        'source': 'http://127.0.0.1:8080/cluster-analysis.json',
+        'destination': '../templates/grafana/dashboards',
+        'type': 'json',
+    },
+    {
+        'source': 'http://127.0.0.1:8080/kubecost.json',
+        'destination': '../templates/grafana/dashboards',
+        'type': 'json',
+    },
+    {
+        'source': 'http://127.0.0.1:8080/concourse_rev2.json',
+        'destination': '../templates/grafana/dashboards',
+        'type': 'json',
+    },
 ]
 
 # Additional conditions map
