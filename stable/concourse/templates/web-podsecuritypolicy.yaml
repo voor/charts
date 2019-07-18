@@ -1,0 +1,19 @@
+{{- if .Values.web.enabled -}}
+{{- if .Values.rbac.create -}}
+{{- if .Values.concourse.web.kubernetes.enabled -}}
+{{- if .Values.rbac.psp.enabled}}
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: {{ template "concourse.web.fullname" . }}
+  labels:
+    app: {{ template "concourse.web.fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+{{ toYaml .Values.rbac.psp.policy | indent 2 }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

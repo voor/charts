@@ -1,6 +1,7 @@
 {{- if and (.Values.serviceAccount.enabled) (not .Values.serviceAccount.name) }}
-apiVersion: v1
-kind: ServiceAccount
+{{- if .Values.securityContext.podSecurityPolicy.enabled}}
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
 metadata:
   labels:
     app: {{ template "postgresql.name" . }}
@@ -8,11 +9,7 @@ metadata:
     release: {{ .Release.Name | quote }}
     heritage: {{ .Release.Service | quote }}
   name: {{ template "postgresql.fullname" . }}
-{{- if .Values.securityContext.podSecurityPolicy.enabled }}
-rules:
-- apiGroups: ["extensions"]
-  resources: ["podsecuritypolicies"]
-  resourceNames: [{{ template "postgresql.fullname" . }}]
-  verbs: ["use"]
-{{- end -}}
+spec:
+{{ toYaml .Values.securityContext.podSecurityPolicy.policy | indent 2 }}
+{{- end }}
 {{- end }}

@@ -10,13 +10,11 @@ metadata:
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
 rules:
-- apiGroups:
-  - extensions
-  resources:
-  - podsecuritypolicies
-  resourceNames:
-  - privileged
-  verbs:
-  - use
+{{- if .Values.rbac.psp.enabled }}
+- apiGroups: ["extensions"]
+  resources: ["podsecuritypolicies"]
+  resourceNames: [{{ template "concourse.worker.fullname" . }}]
+  verbs: ["use"]
+{{- end -}}
 {{- end -}}
 {{- end }}

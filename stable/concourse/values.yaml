@@ -1443,7 +1443,7 @@ web:
     ## Example:
     ##   - concourse.domain.com
     ##
-    hosts:
+    hosts: []
 
     ## TLS configuration.
     ## Secrets must be manually created in the namespace.
@@ -1452,7 +1452,10 @@ web:
     ##     hosts:
     ##       - concourse.domain.com
     ##
-    tls:
+    tls: []
+
+  ## Security context for the web container.
+  podSecurityContext: {}
 
 ## Configuration values for Concourse Worker components.
 ## For more information regarding the characteristics of
@@ -1646,6 +1649,11 @@ worker:
   ##
   emptyDirSize:
 
+  ## Security context for the worker container.
+  podSecurityContext:
+    privileged: true
+
+
 ## Persistent Volume Storage configuration.
 ## Ref: https://kubernetes.io/docs/user-guide/persistent-volumes
 ##
@@ -1749,6 +1757,33 @@ rbac:
   ## The name of the service account to use for worker pods if rbac.create is false
   ##
   workerServiceAccountName: default
+
+  ## If you cluster has a PodSecurityPolicy admission controller you will need to create the associated policies for the web and workers.
+  psp:
+    enabled: true
+
+    policy:
+      allowPrivilegeEscalation: true
+      allowedCapabilities:
+        - "*"
+      fsGroup:
+        rule: RunAsAny
+      hostIPC: true
+      hostNetwork: true
+      hostPID: true
+      hostPorts:
+        - max: 65535
+          min: 0
+      privileged: true
+      runAsUser:
+        rule: RunAsAny
+      seLinux:
+        rule: RunAsAny
+      supplementalGroups:
+        rule: RunAsAny
+      volumes:
+        - "*"
+
 
 ## For managing secrets using Helm
 ##

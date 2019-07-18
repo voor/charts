@@ -14,6 +14,12 @@ rules:
 - apiGroups: [""]
   resources: ["secrets"]
   verbs: ["get"]
+{{- if .Values.rbac.psp.enabled }}
+- apiGroups: ["extensions"]
+  resources: ["podsecuritypolicies"]
+  resourceNames: [{{ template "concourse.web.fullname" . }}]
+  verbs: ["use"]
+{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}

@@ -31,6 +31,8 @@ spec:
 {{ toYaml .Values.web.nodeSelector | indent 8 }}
     {{- end }}
       serviceAccountName: {{ if .Values.rbac.create }}{{ template "concourse.web.fullname" . }}{{ else }}{{ .Values.rbac.webServiceAccountName }}{{ end }}
+      securityContext:
+{{ toYaml .Values.web.podSecurityContext | indent 8 }}
       {{- if .Values.web.tolerations }}
       tolerations:
 {{ toYaml .Values.web.tolerations | indent 8 }}
