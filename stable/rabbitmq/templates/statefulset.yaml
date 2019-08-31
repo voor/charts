@@ -95,6 +95,8 @@ spec:
             {{- end }}
             #replace the default password that is generated
             sed -i "/CHANGEME/cdefault_pass=${RABBITMQ_PASSWORD//\\/\\\\}" /opt/bitnami/rabbitmq/etc/rabbitmq/rabbitmq.conf
+            #replace default mqtt password with generated
+            sed -i "/CHANGEMQTT/cmqtt.default_pass=${RABBITMQ_MQTT_PASSWORD//\\/\\\\}" /opt/bitnami/rabbitmq/etc/rabbitmq/rabbitmq.conf
             #api check for probes
             cat > /opt/bitnami/rabbitmq/sbin/rabbitmq-api-check <<EOF
             #!/bin/sh
@@ -150,6 +152,8 @@ spec:
           containerPort: {{ .Values.service.distPort }}
         - name: stats
           containerPort: {{ .Values.service.managerPort }}
+        - name: mqtt
+          containerPort: {{ .Values.rabbit.mqtt.port }}
         {{- if .Values.livenessProbe.enabled }}
         livenessProbe:
           exec:
@@ -228,6 +232,11 @@ spec:
               secretKeyRef:
                 name: {{ template "rabbitmq.secretPasswordName" . }}
                 key: rabbitmq-password
+          - name: RABBITMQ_MQTT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "rabbitmq.secretPasswordName" . }}
+                key: rabbitmq-mqtt-password
           {{- range $key, $value := .Values.rabbitmq.env }}
           - name: {{ $key }}
             value: {{ $value | quote }}

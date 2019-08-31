@@ -14,6 +14,7 @@ data:
     ##username and password
     default_user={{.Values.rabbitmq.username}}
     default_pass=CHANGEME
+    mqtt.default_pass=CHANGEMQTT
 {{ .Values.rabbitmq.configuration | indent 4 }}
 {{ .Values.rabbitmq.extraConfiguration | indent 4 }}
 {{ if .Values.rabbitmq.advancedConfiguration}}

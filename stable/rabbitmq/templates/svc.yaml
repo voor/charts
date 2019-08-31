@@ -45,6 +45,11 @@ spec:
     port: {{ .Values.metrics.port }}
     targetPort: 9090
 {{- end }}
+{{- if .Values.rabbitmq.mqtt.enabled }}
+  - name: mqtt
+    port: {{ .Values.rabbitmq.mqtt.port }}
+    targetPort: mqtt
+{{- end }}
   selector:
     app: {{ template "rabbitmq.name" . }}
     release: "{{ .Release.Name }}"
